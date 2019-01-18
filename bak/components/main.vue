@@ -2,12 +2,12 @@
     <div id="app">
         <mu-appbar>
             <div class="title">
-                Vue-Layout
-                <mu-badge class="description" content="可视化布局 " color="#f06292" />
+                EasyFE
+                <mu-badge class="description" content="可视化布开发工具" color="#f06292" />
             </div>
             <mu-icon-button icon="share" slot="right" @click="share.open=true" />
             <mu-icon-button icon="settings" slot="right" @click="setting.open=true" />
-            <mu-icon-button icon=":iconfont icon-github" slot="right" href="https://github.com/jaweii/Vue-Layout" /> 
+            <mu-icon-button icon=":iconfont icon-github" slot="right" href="https://github.com/jaweii/Vue-Layout" />
         </mu-appbar>
         <mu-row class="main-content">
             <mu-col class="attributes" :width="width.attr" :tablet="width.attr" :desktop="width.attr">
