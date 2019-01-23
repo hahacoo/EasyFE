@@ -40,8 +40,8 @@ export default {
     const attribute = this.formatAttribute(this.attribute)
     const props = {
       ...attribute
-    }
-    const events = this.bindEvents()
+    } // 组件prop
+    const events = this.bindEvents() // 事件绑定
 
     return h(
       this.name,
@@ -146,10 +146,6 @@ export default {
      */
     addComp(comp) {
       this.container.$emit('render', 'append', this.comp, comp)
-    },
-
-    updateComp(attr) {
-      this.container.$emit('render', 'update', this.comp, attr)
     }
   }
 }

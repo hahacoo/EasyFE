@@ -6,7 +6,6 @@ import VueHighlightJS from 'vue-highlightjs'
 import element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 为代码文本格式化
-import pretty from 'pretty'
 import plugin from './plugin'
 import router from './router'
 import store from './store'
@@ -16,7 +15,6 @@ Vue.config.productionTip = false
 Vue.use(VueHighlightJS)
 Vue.use(element)
 Vue.use(plugin)
-Vue.prototype.$prettyDom = pretty
 Vue.prototype.$compile = Vue.compile
 
 window._Vue = new Vue({

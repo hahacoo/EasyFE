@@ -38,6 +38,8 @@ export default {
               comp={comp}
             ></efe-render>)}
           </el-tab-pane>
+          <el-tab-pane label="样式" name="style">
+          </el-tab-pane>
         </el-tabs>
       </div>
     )

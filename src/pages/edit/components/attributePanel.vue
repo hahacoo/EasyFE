@@ -1,5 +1,5 @@
 <template>
-  <div class="efe-attribute-panel"></div>
+  <div class="efe-attribute-panel">属性面板</div>
 </template>
 
 <script>
