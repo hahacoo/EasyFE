@@ -1,4 +1,5 @@
 <template>
+  <div class="efe-attribute-panel"></div>
 </template>
 
 <script>
@@ -9,4 +10,10 @@ export default {
 
 <style>
 
+</style>
+
+<style lang="less">
+  .efe-attribute-panel {
+    padding-left: 15px;
+  }
 </style>

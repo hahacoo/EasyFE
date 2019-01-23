@@ -1,6 +1,10 @@
 <script>
+import Vue from 'vue'
+import { inherits } from 'util';
+
 export default {
   name: 'efe-render',
+  inject: ['container'],
   props: {
 
     // 组件名称
@@ -10,29 +14,42 @@ export default {
 
     // 属性
     attribute: {
-      type: Object,
+      type: Array,
       default() {
-        return {}
+        return []
       }
     },
 
     // 子节点
     children: {
       type: Array
+    },
+
+    // 组件配置完整信息
+    comp: {
+      type: Object
+    },
+
+    // 组件是否可选择
+    selectable: {
+      type: Boolean,
+      default: true
     }
   },
   render(h) {
-    const { slot, ...attribute } = this.attribute
+    const attribute = this.formatAttribute(this.attribute)
+    const props = {
+      ...attribute
+    }
+    const events = this.bindEvents()
 
     return h(
       this.name,
       {
-        props: {
-          ...this.attribute
-        },
-        slot: this.slot
+        props,
+        ...events
       },
-      this.renderChild(h)
+      this.renderChild(h, this.selectable)
     )
   },
   methods: {
@@ -40,18 +57,17 @@ export default {
     /**
      * 渲染组件节点
      */
-    renderComponent(h, child) {
-      const { name, attribute, children } = child
-      const { slot, ...props } = attribute
+    renderComponent(h, comp, selectable) {
+      const { slot, ...inheritsProps } = comp
 
       return h('efe-render',
         {
           props: {
-            name,
-            attribute: props,
-            children
+            ...inheritsProps,
+            selectable,
+            comp
           },
-          slot
+          slot // 设置插槽
         })
     },
 
@@ -62,16 +78,78 @@ export default {
       return this._v(text)
     },
 
-    renderChild(h) {
+    /**
+     * 渲染子组件
+     */
+    renderChild(h, selectable) {
       if (this.children == null) return // 没有子节点
       if (Object.prototype.toString.call(this.children) === '[object Array]') {
         return this.children.map(child => {
           if (typeof child === 'string') {
            return this.renderText(child) // 渲染文本节点
           }
-          return this.renderComponent(h, child) // 渲染子组件
+          return this.renderComponent(h, child, selectable) // 渲染子组件
        })
       }
+    },
+
+    /**
+     * 格式化属性
+     */
+    formatAttribute(attribute) {
+      const ret = {}
+
+      attribute.forEach(({prop, value}) => {
+        if (prop !== 'slot') {
+          ret[prop] = value
+        }
+      })
+      return ret
+    },
+
+    bindEvents() {
+      let data = {}
+
+      if (this.selectable) {
+        if (Vue.config.isReservedTag(this.name)) {
+
+          // 设置原生标签事件
+          Object.assign(data, {
+            on: {
+              click: this.selectComp
+            }
+          })
+        } else {
+
+          // 设置组件原生事件
+          Object.assign(data, {
+            nativeOn: {
+              click: this.selectComp
+            }
+          })
+        }
+      }
+
+      return data
+    },
+
+    /**
+     * 选择组件
+     */
+    selectComp(evt) {
+      this.container.$emit('select', this.comp)
+      evt.stopPropagation()
+    },
+
+    /**
+     * 添加组件
+     */
+    addComp(comp) {
+      this.container.$emit('render', 'append', this.comp, comp)
+    },
+
+    updateComp(attr) {
+      this.container.$emit('render', 'update', this.comp, attr)
     }
   }
 }

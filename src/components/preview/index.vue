@@ -1,74 +1,44 @@
 <script>
+import { getSource } from '@/utils'
+
 export default {
   name: 'efe-preview',
+  inject: ['container'],
+  props: {
+    components: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
   data() {
     return {
-      components: [
-        {
-          name: 'el-form',
-          attribute: {},
-          children: [
-            {
-              name: 'efe-placeholder',
-              attribute: {
-                height: '200px'
-              }
-            }
-          ]
-        },
-        {
-          name: 'el-card',
-          attribute: {},
-          children: [
-            {
-              name: 'efe-placeholder',
-              attribute: {
-                height: '50px',
-                text: '头部',
-                slot: 'header',
-              }
-            },
-            {
-              name: 'efe-placeholder',
-              attribute: {
-                height: '200px',
-                text: '内容'
-              }
-            }
-          ]
-        },
-        {
-          name: 'el-input',
-          attribute: {},
-          children: [
-            {
-              name: 'span',
-              attribute: {
-                slot: 'prepend'
-              },
-              children: [
-                'http://'
-              ]
-            }
-          ]
-        },
-        {
-          name: 'el-rate'
-        },
-        {
-          name: 'el-progress',
-          attribute: {
-            percentage: 80,
-            color: '#8e71c7'
-          },
-        }
-      ]
+      activeTab: 'page'
+    }
+  },
+  computed: {
+    source() {
+      return getSource(this.components)
     }
   },
   render() {
     return (
       <div class="efe-preview">
-        {this.components.map(comp => <efe-render name={comp.name} attribute={comp.attribute} children={comp.children}></efe-render>)}
+        <el-tabs value={this.activeTab} type="card" onInput={tab => this.activeTab = tab}>
+          <el-tab-pane label="源码" name="source">
+            <div>
+              <pre v-highlightjs={this.source}><code class="html"></code></pre>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="页面" name="page">
+            {this.components.map(comp => <efe-render name={comp.name}
+              attribute={comp.attribute}
+              children={comp.children}
+              comp={comp}
+            ></efe-render>)}
+          </el-tab-pane>
+        </el-tabs>
       </div>
     )
   }
