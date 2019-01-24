@@ -20,6 +20,13 @@ export default {
       }
     },
 
+    domAttribute: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+
     // 子节点
     children: {
       type: Array
@@ -38,6 +45,9 @@ export default {
   },
   render(h) {
     const attribute = this.formatAttribute(this.attribute)
+    const attrs = {
+      ...this.domAttribute
+    }
     const props = {
       ...attribute
     } // 组件prop
@@ -47,6 +57,7 @@ export default {
       this.name,
       {
         props,
+        attrs,
         ...events
       },
       this.renderChild(h, this.selectable)
@@ -122,11 +133,13 @@ export default {
         } else {
 
           // 设置组件原生事件
-          Object.assign(data, {
-            nativeOn: {
-              click: this.selectComp
-            }
-          })
+          if (this.name !== 'efe-placeholder') {
+            Object.assign(data, {
+              nativeOn: {
+                click: this.selectComp
+              }
+            })
+          }
         }
       }
 

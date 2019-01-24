@@ -32,10 +32,17 @@ function startTemplate(component, parent) {
   if (component.name === 'efe-placeholder') return '' // 占位组件，忽略
   let props = ''
 
+  // 原始属性
+  if (component.domAttribute) {
+    Object.keys(component.domAttribute).forEach(key => {
+      props += ` ${key}= "${component.domAttribute[key]}"`
+    })
+  }
+
   // 属性处理
   if (component.attribute) {
     component.attribute.forEach(attr => {
-      props += ` ${attr.prop}= "${attr.value}"`
+      props += attr.type !== 'string' ? ` :${attr.prop}= "${attr.value}"` : ` ${attr.prop}= "${attr.value}"`
     })
   }
 

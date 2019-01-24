@@ -48,4 +48,9 @@ export default {
       }
     }
   }
+  .efe-component-panel {
+    .efe-placeholder__hint {
+      display: none;
+    }
+  }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <el-container class="efe-container">
-    <el-header class="efe-header"></el-header>
-    <el-main class="efe-main"><router-view></router-view></el-main>
-  </el-container>
+  <div class="efe-container">
+    <header class="efe-header"></header>
+    <main class="efe-main"><router-view></router-view></main>
+  </div>
 </template>
 
 <script>
