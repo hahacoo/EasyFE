@@ -50,5 +50,8 @@ export default {
 
 <style lang="less">
   .efe-attribute-panel {
+    .el-form-item {
+      margin-bottom: 15px;
+    }
   }
 </style>
